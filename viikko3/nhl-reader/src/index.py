@@ -17,9 +17,11 @@ def main():
             
             players.append(player)
 
+    players_sorted = sorted(players, key = lambda x: x.goals + x.assists, reverse = True)
+
     print("Players from FIN:\n")
 
-    for player in players:
+    for player in players_sorted:
         print(player)
         
 
