@@ -105,5 +105,4 @@ class TestOstoskori(unittest.TestCase):
  
         ostos = self.kori.ostokset()[0]
  
-        self.assertEqual(ostos.tuotteen_nimi(), "Maito")
         self.assertEqual(ostos.lukumaara(), 1)
