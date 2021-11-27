@@ -30,7 +30,13 @@ class Ostoskori:
         
         if poistettava.nimi() in ostoksien_nimet:
             tuotteen_indeksi = ostoksien_nimet.index(poistettava.nimi())
-            self._ostokset[tuotteen_indeksi].muuta_lukumaaraa(-1)
+            ostos = self._ostokset[tuotteen_indeksi]
+
+            if ostos.lukumaara() == 1:
+                del self._ostokset[tuotteen_indeksi]
+            else:
+                ostos.muuta_lukumaaraa(-1)
+
         # poistaa tuotteen
 
 
