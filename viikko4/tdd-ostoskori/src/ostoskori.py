@@ -26,8 +26,13 @@ class Ostoskori:
             self._ostokset[tuotteen_indeksi].muuta_lukumaaraa(1)
 
     def poista_tuote(self, poistettava: Tuote):
+        ostoksien_nimet = [ostos.tuotteen_nimi() for ostos in self._ostokset]
+        
+        if poistettava.nimi() in ostoksien_nimet:
+            tuotteen_indeksi = ostoksien_nimet.index(poistettava.nimi())
+            self._ostokset[tuotteen_indeksi].muuta_lukumaaraa(-1)
         # poistaa tuotteen
-        pass
+
 
     def tyhjenna(self):
         pass
