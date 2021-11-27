@@ -39,7 +39,6 @@ class Ostoskori:
 
         # poistaa tuotteen
 
-
     def tyhjenna(self):
         self._ostokset.clear()
         # tyhjentää ostoskorin
