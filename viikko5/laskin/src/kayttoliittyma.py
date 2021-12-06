@@ -12,44 +12,63 @@ class Summa:
     def __init__(self, sovelluslogiikka, syote):
         self.sovelluslogiikka = sovelluslogiikka
         self.syote = syote
+        self.edellinen = sovelluslogiikka.tulos
 
     def suorita(self):
+        self.edellinen = self.sovelluslogiikka.tulos
         self.sovelluslogiikka.plus(int(self.syote()))
+
+    def kumoa(self):
+        self.sovelluslogiikka.aseta_arvo(self.edellinen)
 
 class Erotus:
     def __init__(self, sovelluslogiikka, syote):
         self.sovelluslogiikka = sovelluslogiikka
         self.syote = syote
+        self.edellinen = sovelluslogiikka.tulos
 
     def suorita(self):
+        self.edellinen = self.sovelluslogiikka.tulos
         self.sovelluslogiikka.miinus(int(self.syote()))
+
+    def kumoa(self):
+        self.sovelluslogiikka.aseta_arvo(self.edellinen)
 
 class Nollaus:
     def __init__(self, sovelluslogiikka, syote):
         self.sovelluslogiikka = sovelluslogiikka
         self.syote = syote
+        self.edellinen = sovelluslogiikka.tulos
 
     def suorita(self):
+        self.edellinen = self.sovelluslogiikka.tulos
         self.sovelluslogiikka.nollaa()
+
+    def kumoa(self):
+        self.sovelluslogiikka.aseta_arvo(self.edellinen)
 
 class Kumoa:
-    def __init__(self, sovelluslogiikka, syote):
-        self.sovelluslogiikka = sovelluslogiikka
-        self.syote = syote
+    def __init__(self):
+        self.edellinen_komento = None
 
     def suorita(self):
-        self.sovelluslogiikka.nollaa()
+        self.edellinen_komento.kumoa()
+
+    def aseta_edellinen(self, edellinen):
+        print(edellinen)
+        self.edellinen_komento = edellinen
 
 class Kayttoliittyma:
     def __init__(self, sovelluslogiikka, root):
         self._sovelluslogiikka = sovelluslogiikka
         self._root = root
+        self._edellinen_komento = None
 
         self._komennot = {
-            Komento.SUMMA: Summa(sovelluslogiikka, self._lue_syote),
-            Komento.EROTUS: Erotus(sovelluslogiikka, self._lue_syote),
-            Komento.NOLLAUS: Nollaus(sovelluslogiikka, self._lue_syote),
-            Komento.KUMOA: Kumoa(sovelluslogiikka, self._lue_syote)
+            Komento.SUMMA: Summa(self._sovelluslogiikka, self._lue_syote),
+            Komento.EROTUS: Erotus(self._sovelluslogiikka, self._lue_syote),
+            Komento.NOLLAUS: Nollaus(self._sovelluslogiikka, self._lue_syote),
+            Komento.KUMOA: Kumoa()
         }
 
     def kaynnista(self):
@@ -98,6 +117,7 @@ class Kayttoliittyma:
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
         komento_olio.suorita()
+        self._komennot[Komento.KUMOA].aseta_edellinen(komento_olio)
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovelluslogiikka.tulos == 0:
